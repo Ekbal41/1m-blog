@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")  
+}
+
+model User {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  password      String
+  name          String?
+  role          String       @default("USER")
+  refreshToken  String?
+  posts         Post[]
+  comments      Comment[]
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Post {
+  id          String     @id @default(uuid())
+  title       String
+  slug        String     @unique
+  content     String
+  excerpt     String?
+  published   Boolean    @default(false)
+  author      User       @relation(fields: [authorId], references: [id])
+  authorId    String
+  categories  Category[]
+  comments    Comment[]
+  viewCount   Int        @default(0) @map("view_count")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  publishedAt DateTime?  @map("published_at")
+
+  @@map("posts")
+  @@index([slug])
+  @@index([authorId])
+}
+
+model Category {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  slug        String     @unique
+  posts       Post[]
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Comment {
+  id          String     @id @default(uuid())
+  content     String
+  post        Post       @relation(fields: [postId], references: [id])
+  postId      String
+  author      User       @relation(fields: [authorId], references: [id])
+  authorId    String
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  @@map("comments")
+  @@index([postId])
+}
