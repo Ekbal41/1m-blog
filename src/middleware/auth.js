@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
     }
 
     if (!token) {
-      return next(AppError.unauthorized());
+      return next(AppError.unauthorized("AccessToken not found!"));
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -24,8 +24,8 @@ module.exports = async (req, res, next) => {
     if (!currentUser) {
       return next(AppError.userNotFound());
     }
-
-    req.user = currentUser;
+    const { password, refreshToken, ...safeUserData } = currentUser;
+    req.user = safeUserData;
     next();
   } catch (err) {
     next(err);
