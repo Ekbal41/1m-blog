@@ -6,10 +6,9 @@ const logger = require("./utils/logger");
 const sUI = require("swagger-ui-express");
 const { PrismaClient } = require("@prisma/client");
 const errorHandler = require("./middleware/errorHandler");
-const { corsOptions } = require("./options");
 const sFile = require("./swagger.json");
 
-const router = require("./routes");
+const allRouter = require("./routers");
 const prisma = new PrismaClient();
 const app = express();
 
@@ -25,12 +24,16 @@ app.use(
   })
 );
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:3000"],
+  })
+);
+
 app.use(express.json());
-app.use(router);
-
+app.use(allRouter);
 app.use("/", sUI.serve, sUI.setup(sFile));
-
 app.use(errorHandler);
 
 prisma

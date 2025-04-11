@@ -6,7 +6,7 @@
     "description": "API Documentation"
   },
   "host": "localhost:3000",
-  "basePath": "/api/v1",
+  "basePath": "/",
   "schemes": [
     "http",
     "https"
