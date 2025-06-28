@@ -29,7 +29,7 @@ const cache = (duration) => {
       if (cachedData) {
         logger.debug(`Cache hit for key: ${cacheKey}`);
         return res.json({
-          fromCache: true,
+          cached: true,
           data: cachedData,
         });
       }
@@ -37,7 +37,7 @@ const cache = (duration) => {
       const originalJson = res.json.bind(res);
       res.json = (body) => {
         const responseBody = {
-          fromCache: false,
+          cached: false,
           data: body,
         };
         try {

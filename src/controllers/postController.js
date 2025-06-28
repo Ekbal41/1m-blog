@@ -64,7 +64,7 @@ exports.createPost = async (req, res, next) => {
 
     res.status(201).json({
       status: "success",
-      data: post,
+      post,
     });
   } catch (err) {
     next(err);
@@ -177,7 +177,7 @@ exports.getAllPosts = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       results: posts.length,
-      data: posts,
+      posts,
       pagination: {
         total,
         totalPages: Math.ceil(total / limit),
@@ -235,7 +235,7 @@ exports.getPost = async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      data: post,
+      post,
     });
   } catch (err) {
     next(err);
@@ -285,7 +285,7 @@ exports.getPostBySlug = async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      data: post,
+      post,
     });
   } catch (err) {
     next(err);
@@ -357,7 +357,7 @@ exports.updatePost = async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      data: post,
+      post,
     });
   } catch (err) {
     next(err);
@@ -388,7 +388,7 @@ exports.deletePost = async (req, res, next) => {
 
     res.status(204).json({
       status: "success",
-      data: null,
+      post: null,
     });
   } catch (err) {
     next(err);
